@@ -1,0 +1,56 @@
+*{
+  padding: 0;
+  margin: 0;
+  
+}
+
+.app{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #312e2b;
+}
+.chessboard{
+  position: relative;
+  display: grid;
+  place-content: center;
+  grid-template-columns: repeat(8,1fr);
+  grid-template-rows: repeat(8,1fr);
+  
+  width: 600px;
+  height: 600px;
+  background-color:#779952 
+  
+}
+
+.dark{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color:#edeed1 ;
+}
+.light
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color:#779952 ;
+}
+.chess_piece
+{
+
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 70px;
+  width:70px;
+}
+.chess_piece:hover{
+  cursor: grab;
+}
+
+ 
+  
+
+
