@@ -84,15 +84,15 @@ function Chessboard() {
         let miny = chessboardref.current.offsetTop;
         if (activePiece !== null) {
             
-            // Inscreen horizontal is assume as x but in my board horizontal is y axis or (j)
+            // Inscreen horizontal is considered as x-axis but in my board i standard the  horizontal as y axis or (j)
             let ypos = Math.floor((e.clientX - minx) / (width / 8));
             let xpos = Math.floor((e.clientY - miny) / (width / 8));
            
             
                 setboardstate((value)=>{
-                    const Boardstate= value.map((p) => {
+                    const boardstate= value.map((p) => {
                         if (p.x === gridx && p.y === gridy) {
-                            const check=referee.isValidmove(gridx,gridy,xpos,ypos,p.type,p.playertype);
+                            const check=referee.isValidmove(gridx,gridy,xpos,ypos,p.type,p.playertype,Boardstate);
                             if(check)
                             {
 
@@ -109,7 +109,7 @@ function Chessboard() {
                             return p;
         
                     });
-                    return Boardstate;
+                    return boardstate;
                 });
                 setactivepiece(null);
             
