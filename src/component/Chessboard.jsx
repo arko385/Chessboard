@@ -87,30 +87,57 @@ function Chessboard() {
             // Inscreen horizontal is considered as x-axis but in my board i standard the  horizontal as y axis or (j)
             let ypos = Math.floor((e.clientX - minx) / (width / 8));
             let xpos = Math.floor((e.clientY - miny) / (width / 8));
-           
+            const currentpiece= Boardstate.find((p)=>p.x===gridx&&p.y===gridy);
+            const attackpiece= Boardstate.find((p)=>p.x===xpos&&p.y===ypos);
+            if(currentpiece)
+            {
+                const isvalid=referee.isValidmove(gridx,gridy,xpos,ypos,currentpiece.type,currentpiece.playertype,Boardstate);
+                if(isvalid)
+                {
+                   const boardstate=Boardstate.reduce((accumulator, p)=>{
+                    if(p.x === gridx && p.y === gridy)
+                    {
+                        const updatedElement = { ...p, x: xpos, y: ypos };
+                        accumulator.push(updatedElement);
+                    }
+                    else if(!(p.x === xpos && p.y === ypos))
+                    {
+                        accumulator.push(p);
+                    }
+                    return accumulator;
+                   },[]);
+                   
+                   setboardstate(boardstate);
+                }
+                else
+                {
+                    activePiece.style.removeProperty("top");
+                    activePiece.style.removeProperty("left");
+                }
+
+            }
             
-                setboardstate((value)=>{
-                    const boardstate= value.map((p) => {
-                        if (p.x === gridx && p.y === gridy) {
-                            const check=referee.isValidmove(gridx,gridy,xpos,ypos,p.type,p.playertype,Boardstate);
-                            if(check)
-                            {
+            //    const boardstate= Boardstate.map((p) => {
+            //     if (p.x === gridx && p.y === gridy) {
+            //         const check=referee.isValidmove(gridx,gridy,xpos,ypos,p.type,p.playertype,Boardstate);
+            //         if(check)
+            //         {
 
-                                p.x=xpos;p.y=ypos;
-                            }
-                            else
-                            {
-                               activePiece.style.removeProperty("top");
-                               activePiece.style.removeProperty("left");
+            //             p.x=xpos;p.y=ypos;
+            //         }
+            //         else
+            //         {
+            //            activePiece.style.removeProperty("top");
+            //            activePiece.style.removeProperty("left");
 
-                            }
-                        }
-                     
-                            return p;
-        
-                    });
-                    return boardstate;
-                });
+            //         }
+            //     }
+             
+            //         return p;
+
+            // });
+            
+                
                 setactivepiece(null);
             
        
