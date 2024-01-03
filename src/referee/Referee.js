@@ -56,6 +56,8 @@ export default class Referee {
         //###########################################################################################################
        else if(type==="knight")
        {
+        console.log(currx,curry);
+
            if((Math.abs(prevx-currx)===1&&Math.abs(prevy-curry)===2)||(Math.abs(prevx-currx)===2&&Math.abs(prevy-curry)===1))
            {
               if(!this.tileOccupiedbyOwn(currx,curry,Boardstate,playertype))

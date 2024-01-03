@@ -132,6 +132,13 @@ function Chessboard() {
                 }
 
             }
+            else
+            {
+                console.log("not have any current piece");
+                activePiece.style.removeProperty("top");
+                activePiece.style.removeProperty("left");
+                setboardstate(Boardstate);
+            }
         
                 setactivepiece(null);
             
@@ -173,12 +180,12 @@ function Chessboard() {
 
     return (
         <div className='container'>
-             <div ref={chessboardref} className='chessboard'
+            <div ref={chessboardref} className='chessboard'
             onMouseDown={grabPiece}
             onMouseMove={movePiece}
             onMouseUp={leavePiece}
-            // onMouseLeave={leavePiece}
-            onMouseLeave={leaveoutbound}
+            // onMouseLeave={leaveoutbound}
+            onMouseLeave={leavePiece}
         >{board}</div>
         </div>
        
