@@ -1,5 +1,11 @@
 export default class Referee {
-
+    isonboard(x,y)
+    {
+        if((x>=0&&x<8)&&(y>=0&&y<8))
+        return true;
+        else
+        return false;
+    }
     tileOccupied(x, y, Boardstate) {
         const occupy = Boardstate.find((p) => p.x === x && p.y === y);
         if (occupy)
@@ -56,12 +62,16 @@ export default class Referee {
         //###########################################################################################################
        else if(type==="knight")
        {
-        console.log(currx,curry);
+       
 
-           if((Math.abs(prevx-currx)===1&&Math.abs(prevy-curry)===2)||(Math.abs(prevx-currx)===2&&Math.abs(prevy-curry)===1))
+           if(this.isonboard(currx,curry)&&(Math.abs(prevx-currx)===1&&Math.abs(prevy-curry)===2)||(Math.abs(prevx-currx)===2&&Math.abs(prevy-curry)===1))
            {
               if(!this.tileOccupiedbyOwn(currx,curry,Boardstate,playertype))
-              return true;
+              {
+                console.log(currx,curry,"knight pos");
+                return true;
+              }
+              
            }
        }
        

@@ -146,19 +146,7 @@ function Chessboard() {
         }
     }
 
-    const leaveoutbound=(e)=>{
-        console.log("leave");
-        if (activePiece !== null) 
-        {  
-           
-            activePiece.style.removeProperty("top");
-            activePiece.style.removeProperty("left");
-            setactivepiece(null);
-            
-        }
-       
-
-    }
+ 
 
     const board = [];
 
@@ -184,7 +172,6 @@ function Chessboard() {
             onMouseDown={grabPiece}
             onMouseMove={movePiece}
             onMouseUp={leavePiece}
-            // onMouseLeave={leaveoutbound}
             onMouseLeave={leavePiece}
         >{board}</div>
         </div>
