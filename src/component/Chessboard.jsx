@@ -19,16 +19,19 @@ function Chessboard() {
         let minx = chessboardref.current.offsetLeft;
         let width = chessboardref.current.clientWidth;
         let miny = chessboardref.current.offsetTop;
-        let ypos=Math.floor((e.clientX-minx)/(width/8));
-        let xpos=Math.floor((e.clientY-miny)/(width/8));
         const element = e.target;
         if (element.classList.contains("chess_piece")) {
-       
+           
             setactivepiece(element);
+          
+            let ypos=Math.floor((e.clientX-minx)/(width/8));
+            let xpos=Math.floor((e.clientY-miny)/(width/8));
             let x = e.clientX - minx - 35;
             let y = e.clientY - miny - 35;
             setgridx(xpos);
             setgridy(ypos);
+           
+           
             if (x < 0) {
                 x = 0;
             }
@@ -41,9 +44,11 @@ function Chessboard() {
             if (y > width) {
                 y = width - 75;
             }
+            
             element.style.position = "absolute";
             element.style.left = `${x}px`;
             element.style.top = `${y}px`;
+            
 
         }
 
@@ -55,9 +60,10 @@ function Chessboard() {
         let minx = chessboardref.current.offsetLeft;
         let width = chessboardref.current.clientWidth;
         let miny = chessboardref.current.offsetTop;
-
+      
 
         if (activePiece !== null) {
+           
             let x = e.clientX - minx - 35;
             let y = e.clientY - miny - 35;
             if (x < 0) {
@@ -72,28 +78,34 @@ function Chessboard() {
             if (y > width) {
                 y = width - 75;
             }
-            // activePiece.style.position = "absolute";
+            activePiece.style.position = "absolute";
             activePiece.style.left = `${x}px`;
             activePiece.style.top = `${y}px`;
+            
         }
+       
     }
 
     const leavePiece = (e) => {
+        
         let minx = chessboardref.current.offsetLeft;
         let width = chessboardref.current.clientWidth;
         let miny = chessboardref.current.offsetTop;
+     
         if (activePiece !== null) {
             
             // Inscreen horizontal is considered as x-axis but in my board i standard the  horizontal as y axis or (j)
             let ypos = Math.floor((e.clientX - minx) / (width / 8));
             let xpos = Math.floor((e.clientY - miny) / (width / 8));
+          
             const currentpiece= Boardstate.find((p)=>p.x===gridx&&p.y===gridy);
-            const attackpiece= Boardstate.find((p)=>p.x===xpos&&p.y===ypos);
             if(currentpiece)
             {
+               
                 const isvalid=referee.isValidmove(gridx,gridy,xpos,ypos,currentpiece.type,currentpiece.playertype,Boardstate);
                 if(isvalid)
                 {
+                  
                    const boardstate=Boardstate.reduce((accumulator, p)=>{
                     if(p.x === gridx && p.y === gridy)
                     {
@@ -102,46 +114,43 @@ function Chessboard() {
                     }
                     else if(!(p.x === xpos && p.y === ypos))
                     {
+                        // it will not push that piece which will be attacked by the valid move
                         accumulator.push(p);
                     }
                     return accumulator;
                    },[]);
-                   
+
                    setboardstate(boardstate);
+                
                 }
                 else
                 {
+                    //Reset piece position if move is not valid
+              
                     activePiece.style.removeProperty("top");
                     activePiece.style.removeProperty("left");
                 }
 
             }
-            
-            //    const boardstate= Boardstate.map((p) => {
-            //     if (p.x === gridx && p.y === gridy) {
-            //         const check=referee.isValidmove(gridx,gridy,xpos,ypos,p.type,p.playertype,Boardstate);
-            //         if(check)
-            //         {
-
-            //             p.x=xpos;p.y=ypos;
-            //         }
-            //         else
-            //         {
-            //            activePiece.style.removeProperty("top");
-            //            activePiece.style.removeProperty("left");
-
-            //         }
-            //     }
-             
-            //         return p;
-
-            // });
-            
-                
+        
                 setactivepiece(null);
             
        
         }
+    }
+
+    const leaveoutbound=(e)=>{
+        console.log("leave");
+        if (activePiece !== null) 
+        {  
+           
+            activePiece.style.removeProperty("top");
+            activePiece.style.removeProperty("left");
+            setactivepiece(null);
+            
+        }
+       
+
     }
 
     const board = [];
@@ -163,13 +172,16 @@ function Chessboard() {
 
 
     return (
-        <div ref={chessboardref} className='chessboard'
+        <div className='container'>
+             <div ref={chessboardref} className='chessboard'
             onMouseDown={grabPiece}
             onMouseMove={movePiece}
             onMouseUp={leavePiece}
-
-
+            // onMouseLeave={leavePiece}
+            onMouseLeave={leaveoutbound}
         >{board}</div>
+        </div>
+       
     )
 }
 

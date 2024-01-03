@@ -16,6 +16,15 @@ export default class Referee {
         return false;
     }
 
+    tileOccupiedbyOwn(x, y, Boardstate,playertype)
+    {
+        const occupy=Boardstate.find((p) => p.x === x && p.y === y&&p.playertype===playertype);
+        if (occupy)
+        return true;
+        else
+        return false;
+    }
+
     isValidmove(prevx, prevy, currx, curry, type, playertype, Boardstate) {
 
         //###########################################################################################################
@@ -45,7 +54,15 @@ export default class Referee {
         }
 
         //###########################################################################################################
-
+       else if(type==="knight")
+       {
+           if((Math.abs(prevx-currx)===1&&Math.abs(prevy-curry)===2)||(Math.abs(prevx-currx)===2&&Math.abs(prevy-curry)===1))
+           {
+              if(!this.tileOccupiedbyOwn(currx,curry,Boardstate,playertype))
+              return true;
+           }
+       }
+       
 
 
 

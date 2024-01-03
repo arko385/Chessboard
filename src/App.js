@@ -1,9 +1,9 @@
-import logo from './logo.svg';
+
 import './App.css';
 import Chessboard from './component/Chessboard';
 function App() {
   return (
-    <div className="app">
+    <div className="app" >
       <Chessboard/>
     </div>
   );

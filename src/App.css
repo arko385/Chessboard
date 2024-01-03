@@ -5,6 +5,10 @@
 }
 
 .app{
+ background-color: aqua;
+}
+.container
+{
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,12 +16,12 @@
   background-color: #312e2b;
 }
 .chessboard{
+  
   position: relative;
   display: grid;
   place-content: center;
   grid-template-columns: repeat(8,1fr);
   grid-template-rows: repeat(8,1fr);
-  
   width: 600px;
   height: 600px;
   background-color:#779952 
@@ -39,7 +43,6 @@
 }
 .chess_piece
 {
-
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
