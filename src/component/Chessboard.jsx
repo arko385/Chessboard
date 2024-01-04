@@ -134,10 +134,9 @@ function Chessboard() {
             }
             else
             {
-                console.log("not have any current piece");
                 activePiece.style.removeProperty("top");
                 activePiece.style.removeProperty("left");
-                setboardstate(Boardstate);
+              
             }
         
                 setactivepiece(null);
