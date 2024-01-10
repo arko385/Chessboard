@@ -1,5 +1,8 @@
-
+import io from 'socket.io-client';
+import { nanoid } from "nanoid";
 const url = "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/";
+export const socket = io.connect("http://localhost:4000");
+export const userid=nanoid(4);
 export const Pieces = [];
 let type = "", xpos = 1,playertype;
 

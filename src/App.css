@@ -6,10 +6,29 @@
 
 .app{
  background-color: aqua;
+ height: 100vh;
+ width: auto;
+ background-repeat: no-repeat;
+ object-fit: contain;
+ display: flex;
+ flex-direction: row;
+ align-items: center;
+ justify-content: center;
 }
+.play{
+  background-color: #779952;
+  border-radius: 10px;
+  width:100px;
+  padding: 10px;
+  font-size: medium;
+}
+
+
+
 .container
 {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
@@ -54,6 +73,16 @@
 }
 
  
-  
-
+/* chat css here */
+.username{
+  background-color: rgb(237, 171, 26);
+}
+.text{
+  margin: 5px;
+}
+.chatline{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 

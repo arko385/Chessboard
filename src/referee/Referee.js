@@ -30,17 +30,47 @@ export default class Referee {
 
     tileOccupieddiagonally(Boardstate, diagonalsign, prevx, prevy, currx, curry) {
         let constant = Math.abs(prevx + (diagonalsign * prevy));
-        const smallx=(prevx<currx)?prevx:currx;
-        const bigx=(prevx<currx)?currx:prevx;
-        const smally=(prevy<curry)?prevy:curry;
-        const bigy=(prevy<curry)?curry:prevy;
+        const smallx = (prevx < currx) ? prevx : currx;
+        const bigx = (prevx < currx) ? currx : prevx;
+        const smally = (prevy < curry) ? prevy : curry;
+        const bigy = (prevy < curry) ? curry : prevy;
         const occupy = Boardstate.find((p) => (Math.abs(p.x + (diagonalsign * p.y)) === constant && (smallx < p.x && p.x < bigx) && (smally < p.y && p.y < bigy)));
-           
+
+        if (occupy)
+            return true;
+        else
+            return false;
+
+
+    }
+
+    tileOccupiedlinearly(Boardstate, prevx, prevy, currx, curry) {
+        const smallx = (prevx < currx) ? prevx : currx;
+        const bigx = (prevx < currx) ? currx : prevx;
+        const smally = (prevy < curry) ? prevy : curry;
+        const bigy = (prevy < curry) ? curry : prevy;
+
+        if (prevx === currx) //linear movement
+        {
+            const occupy = Boardstate.find((p) => p.x === currx && (smally < p.y && p.y < bigy));
+
             if (occupy)
                 return true;
             else
                 return false;
-        
+        }
+        else if (prevy === curry)//verticle movement
+        {
+            const occupy = Boardstate.find((p) => p.y === curry && (smallx < p.x && p.x < bigx));
+
+            if (occupy)
+                return true;
+            else
+                return false;
+        }
+
+       return true;
+
 
     }
 
@@ -75,7 +105,7 @@ export default class Referee {
         else if (type === "knight") {
 
 
-            if (this.isonboard(currx, curry) && (Math.abs(prevx - currx) === 1 && Math.abs(prevy - curry) === 2) || (Math.abs(prevx - currx) === 2 && Math.abs(prevy - curry) === 1)) {
+            if (this.isonboard(currx, curry) && (((Math.abs(prevx - currx) === 1) && Math.abs(prevy - curry) === 2) || (Math.abs(prevx - currx) === 2 && Math.abs(prevy - curry) === 1))) {
                 if (!this.tileOccupiedbyOwn(currx, curry, Boardstate, playertype)) {
                     return true;
                 }
@@ -89,19 +119,53 @@ export default class Referee {
             if (currx + curry === prevx + prevy) {
                 diagonalsign = 1; //bottom-left <--> top-right
             }
-            else if (Math.abs(currx - curry) === Math.abs(prevx - prevy)) {
+            else if ((currx - curry) === (prevx - prevy)) {
                 diagonalsign = -1; //top-left <-->bottom-right
             }
-            if (this.isonboard(currx, curry)&&diagonalsign !== 0 && !this.tileOccupieddiagonally(Boardstate, diagonalsign, prevx, prevy, currx, curry) && !this.tileOccupiedbyOwn(currx, curry, Boardstate, playertype)) {
+            if (this.isonboard(currx, curry) && diagonalsign !== 0 && !this.tileOccupieddiagonally(Boardstate, diagonalsign, prevx, prevy, currx, curry) && !this.tileOccupiedbyOwn(currx, curry, Boardstate, playertype)) {
                 return true;
             }
 
         }
 
+        //###########################################################################################################
+        else if (type === "rook") {
+            if (prevx === currx || prevy === curry) {
+                if (this.isonboard(currx, curry) && !this.tileOccupiedlinearly(Boardstate, prevx, prevy, currx, curry) && !this.tileOccupiedbyOwn(currx, curry, Boardstate, playertype))
+                    return true;
+            }
 
+        }
 
+        //###########################################################################################################
+        else if (type === "queen") // it's property is the combination of rook and bishop
+        {
+            if (prevx === currx || prevy === curry) {
+                if (this.isonboard(currx, curry) && !this.tileOccupiedlinearly(Boardstate, prevx, prevy, currx, curry) && !this.tileOccupiedbyOwn(currx, curry, Boardstate, playertype))
+                {
+                   console.log("by rooks move")
+                    return true;
+                }
+            }
+            let diagonalsign = 0;
+            if (currx + curry === prevx + prevy) {
+                diagonalsign = 1; //bottom-left <--> top-right
+            }
+            else if ((currx - curry) === (prevx - prevy)) {
+                console.log(currx,curry);
+                console.log(prevx,prevy);
+                console.log(Math.abs(currx - curry));
+                console.log(Math.abs(prevx - prevy));
+                diagonalsign = -1; //top-left <-->bottom-right
+            }
+            if (this.isonboard(currx, curry) && diagonalsign !== 0 && !this.tileOccupieddiagonally(Boardstate, diagonalsign, prevx, prevy, currx, curry) && !this.tileOccupiedbyOwn(currx, curry, Boardstate, playertype)) 
+            {
+                console.log("by bishop move", diagonalsign);
+                 return true;
+             }
+        }
 
-
+        //###########################################################################################################
 
 
 

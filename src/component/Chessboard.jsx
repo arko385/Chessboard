@@ -1,8 +1,10 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import Tile from './Tile';
-import { Pieces } from './Initialstate';
+import { Pieces,socket,userid } from './Initialstate';
 import Referee from '../referee/Referee';
+
+
 
 
 function Chessboard() {
@@ -12,7 +14,10 @@ function Chessboard() {
     const [gridx, setgridx] = useState(-1);
     const [gridy, setgridy] = useState(-1);
     const [activePiece ,setactivepiece]=useState(null);
+    const [roomname,setroomname]=useState("");
     const referee=new Referee();
+
+   
 
 
     const grabPiece = (e) => {
@@ -121,6 +126,7 @@ function Chessboard() {
                    },[]);
 
                    setboardstate(boardstate);
+                   socket.emit("move", boardstate );
                 
                 }
                 else
@@ -145,9 +151,30 @@ function Chessboard() {
         }
     }
 
- 
+    //##############################################################################################################
+  
+   
+    useEffect(() => {
+       
+            socket.on('movedone',(senderId,payload) => {
+  
+                console.log(senderId);
+                setboardstate(payload);
+               
+            });
+
+         
+        
+       //chat implement later
+        socket.on("chatroom",(payload)=>{
+            console.log(payload);
+        })
+      });
 
     const board = [];
+   
+
+    //##############################################################################################################
 
     for (let i = 0; i < 8; i++) {
         for (let j = 0; j < 8; j++) {
@@ -167,6 +194,7 @@ function Chessboard() {
 
     return (
         <div className='container'>
+          
             <div ref={chessboardref} className='chessboard'
             onMouseDown={grabPiece}
             onMouseMove={movePiece}
