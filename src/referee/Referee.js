@@ -69,7 +69,7 @@ export default class Referee {
                 return false;
         }
 
-       return true;
+        return true;
 
 
     }
@@ -79,12 +79,16 @@ export default class Referee {
         //###########################################################################################################
         if (type === "pawn") {
             const specialposition = (playertype === 'own') ? 6 : 1;
+
             const movementsign = (playertype === 'own') ? 1 : -1;
+            // if black piece below board
+            //const movementsign = 1 ;
             //Movement logic
             // Normal one tile movement
             if (curry === prevy && prevx - currx === movementsign) {
                 if (!this.tileOccupied(currx, curry, Boardstate))
-                    return true;
+                    console.log("valid");
+                return true;
             }
 
             //speical case for 2 tile movement
@@ -141,9 +145,8 @@ export default class Referee {
         else if (type === "queen") // it's property is the combination of rook and bishop
         {
             if (prevx === currx || prevy === curry) {
-                if (this.isonboard(currx, curry) && !this.tileOccupiedlinearly(Boardstate, prevx, prevy, currx, curry) && !this.tileOccupiedbyOwn(currx, curry, Boardstate, playertype))
-                {
-                   console.log("by rooks move")
+                if (this.isonboard(currx, curry) && !this.tileOccupiedlinearly(Boardstate, prevx, prevy, currx, curry) && !this.tileOccupiedbyOwn(currx, curry, Boardstate, playertype)) {
+                    console.log("by rooks move")
                     return true;
                 }
             }
@@ -152,20 +155,31 @@ export default class Referee {
                 diagonalsign = 1; //bottom-left <--> top-right
             }
             else if ((currx - curry) === (prevx - prevy)) {
-                console.log(currx,curry);
-                console.log(prevx,prevy);
+                console.log(currx, curry);
+                console.log(prevx, prevy);
                 console.log(Math.abs(currx - curry));
                 console.log(Math.abs(prevx - prevy));
                 diagonalsign = -1; //top-left <-->bottom-right
             }
-            if (this.isonboard(currx, curry) && diagonalsign !== 0 && !this.tileOccupieddiagonally(Boardstate, diagonalsign, prevx, prevy, currx, curry) && !this.tileOccupiedbyOwn(currx, curry, Boardstate, playertype)) 
-            {
+            if (this.isonboard(currx, curry) && diagonalsign !== 0 && !this.tileOccupieddiagonally(Boardstate, diagonalsign, prevx, prevy, currx, curry) && !this.tileOccupiedbyOwn(currx, curry, Boardstate, playertype)) {
                 console.log("by bishop move", diagonalsign);
-                 return true;
-             }
+                return true;
+            }
         }
 
         //###########################################################################################################
+        else if(type==="king")
+        {
+            if(Math.abs(currx-prevx)<=1&&Math.abs(curry-prevy)<=1)
+            {
+                if(this.isonboard(currx, curry)&&!this.tileOccupiedbyOwn(currx, curry, Boardstate, playertype))
+                {
+
+                    console.log("one move");
+                    return true;
+                }
+            }
+        }
 
 
 

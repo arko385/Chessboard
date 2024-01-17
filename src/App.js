@@ -5,7 +5,6 @@ import Chat from './component/Chat';
 import React, { useState  } from 'react';
 import { userid, socket } from './component/Initialstate';
 import { Redirect,useNavigate } from 'react-router-dom';
-import backgroundImage from './component/background.png';
 import bg from './component/bg.png'
 
 

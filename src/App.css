@@ -6,14 +6,15 @@
 
 .app{
  background-color: aqua;
- height: 100vh;
- width: auto;
- background-repeat: no-repeat;
- object-fit: contain;
  display: flex;
  flex-direction: row;
  align-items: center;
  justify-content: center;
+ background-repeat: no-repeat;
+ width: auto;
+ height: 100vh;
+ background-position: center;
+ background-size: cover;
 }
 .play{
   background-color: #779952;
