@@ -79,16 +79,14 @@ export default class Referee {
         //###########################################################################################################
         if (type === "pawn") {
             const specialposition = (playertype === 'own') ? 6 : 1;
-
             const movementsign = (playertype === 'own') ? 1 : -1;
-            // if black piece below board
-            //const movementsign = 1 ;
             //Movement logic
             // Normal one tile movement
             if (curry === prevy && prevx - currx === movementsign) {
-                if (!this.tileOccupied(currx, curry, Boardstate))
-                    console.log("valid");
-                return true;
+                if (!this.tileOccupied(currx, curry, Boardstate)) {
+
+                    return true;
+                }
             }
 
             //speical case for 2 tile movement
@@ -100,7 +98,7 @@ export default class Referee {
             }
             //Attacking logic
             else if (prevx - currx === movementsign && (Math.abs(prevy - curry) === 1) && this.tileOccupiedbyEneimy(currx, curry, Boardstate, playertype)) {
-                return true;
+                    return true;
             }
 
         }
@@ -168,12 +166,9 @@ export default class Referee {
         }
 
         //###########################################################################################################
-        else if(type==="king")
-        {
-            if(Math.abs(currx-prevx)<=1&&Math.abs(curry-prevy)<=1)
-            {
-                if(this.isonboard(currx, curry)&&!this.tileOccupiedbyOwn(currx, curry, Boardstate, playertype))
-                {
+        else if (type === "king") {
+            if (Math.abs(currx - prevx) <= 1 && Math.abs(curry - prevy) <= 1) {
+                if (this.isonboard(currx, curry) && !this.tileOccupiedbyOwn(currx, curry, Boardstate, playertype)) {
 
                     console.log("one move");
                     return true;

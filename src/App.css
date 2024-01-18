@@ -42,8 +42,8 @@
   place-content: center;
   grid-template-columns: repeat(8,1fr);
   grid-template-rows: repeat(8,1fr);
-  width: 600px;
-  height: 600px;
+  width: 500px;
+  height: 500px;
   background-color:#779952 
   
 }
@@ -66,8 +66,8 @@
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  height: 70px;
-  width:70px;
+  height: 60px;
+  width:60px;
 }
 .chess_piece:hover{
   cursor: grab;
@@ -85,5 +85,17 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+
+.promotion{
+  position: absolute;
+  display:flex;
+  flex-direction: column;
+  background-color:rgba(0,0,0,0.8);
+  z-index: 5;
+}
+.promotionhidden
+{
+  display: none;
 }
 

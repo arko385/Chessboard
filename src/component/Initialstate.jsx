@@ -42,3 +42,12 @@ for (let i = 0; i < 8; i++) {
     Pieces.push({ x: 6, y: i, image: url + "wp.png",type:"pawn",playertype: "own",color:'w' }); //white pawns
     Pieces.push({ x: 1, y: i, image: url + "bp.png",type:"pawn",playertype: "opponent",color:'b'}); //black pawns
 }
+
+export const Promotionpieces=(color)=>{
+    const piece=[];
+    piece.push({image: url + color + "r.png",type:"rook"}) ;
+    piece.push({image: url + color + "n.png",type:"knight"}) ;
+    piece.push({image: url + color + "b.png",type:"bishop"}) ;
+    piece.push({image: url + color + "q.png",type:"queen"}) ;
+    return piece;
+};
