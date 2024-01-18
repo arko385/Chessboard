@@ -147,8 +147,8 @@ function Chessboard() {
             const currentpiece = Boardstate.find((p) => p.x === gridx && p.y === gridy);
             if (currentpiece) {
                 const isvalid = referee.isValidmove(gridx, gridy, xpos, ypos, currentpiece.type, currentpiece.playertype, Boardstate);
-                // canmove&&
-                if (isvalid && currentpiece.color === color) {
+                // 
+                if (canmove&&isvalid && currentpiece.color === color) {
 
                     const endposition = (color === 'w') ? 0 : 7;
 
