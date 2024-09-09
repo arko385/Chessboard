@@ -40,175 +40,355 @@ function Chessboard() {
         socket.emit("move", boardstate);
 
     };
+//##############################################################################
+    // const grabPiece = (e) => {
+    //     let minx = chessboardref.current.offsetLeft;
+    //     let width = chessboardref.current.clientWidth;
+    //     let miny = chessboardref.current.offsetTop;
+    //     const element = e.target;
+    //     if (element.classList.contains("chess_piece")) {
+
+    //         setactivepiece(element);
+    //         let ypos, xpos;
+    //         if (color === 'w') {
+    //             ypos = Math.floor((e.clientX - minx) / (width / 8));
+    //             xpos = Math.floor((e.clientY - miny) / (width / 8));
+    //         }
+    //         else {
+
+    //             ypos = Math.floor(((minx + width) - e.clientX) / (width / 8));
+    //             xpos = Math.floor(((miny + width) - e.clientY) / (width / 8));
+    //         }
+
+
+    //         let x = e.clientX - minx - 30;
+    //         let y = e.clientY - miny - 38;
+    //         console.log(x, y);
+
+    //         setgridx(xpos);
+    //         setgridy(ypos);
+
+
+    //         if (x < 0) {
+    //             x = 0;
+    //         }
+    //         if (x > width - 30) {
+    //             x = width - 30;
+    //         }
+    //         if (y < 0) {
+    //             y = 0;
+    //         }
+    //         if (y > width - 30) {
+    //             y = width - 30;
+    //         }
+
+    //         element.style.position = "absolute";
+    //         element.style.left = `${x}px`;
+    //         element.style.top = `${y}px`;
+
+
+    //     }
+
+    // }
+
+//##############################################################################
+
+    
     const grabPiece = (e) => {
+        // New grabpiece function considering mobile option
+        e.preventDefault(); // Prevent scrolling on touch devices
+        const eventType = e.type.includes('mouse') ? 'mouse' : 'touch';
+        
+        let posX, posY;
+        if (eventType === 'mouse') {
+            posX = e.clientX;
+            posY = e.clientY;
+        } else {
+            posX = e.touches[0].clientX;
+            posY = e.touches[0].clientY;
+        }
+    
         let minx = chessboardref.current.offsetLeft;
         let width = chessboardref.current.clientWidth;
         let miny = chessboardref.current.offsetTop;
         const element = e.target;
+        
         if (element.classList.contains("chess_piece")) {
-
             setactivepiece(element);
             let ypos, xpos;
             if (color === 'w') {
-                ypos = Math.floor((e.clientX - minx) / (width / 8));
-                xpos = Math.floor((e.clientY - miny) / (width / 8));
+                ypos = Math.floor((posX - minx) / (width / 8));
+                xpos = Math.floor((posY - miny) / (width / 8));
+            } else {
+                ypos = Math.floor(((minx + width) - posX) / (width / 8));
+                xpos = Math.floor(((miny + width) - posY) / (width / 8));
             }
-            else {
+        
+            let x,y;
 
-                ypos = Math.floor(((minx + width) - e.clientX) / (width / 8));
-                xpos = Math.floor(((miny + width) - e.clientY) / (width / 8));
+            if (eventType === 'mouse') {
+                 x = posX - minx - 30;
+                 y = posY - miny - 38;
+                // Boundaries for dragging within the chessboard
+                x = Math.max(0, Math.min(x, width - 30));
+                y = Math.max(0, Math.min(y, width - 38));
             }
-
-
-            let x = e.clientX - minx - 30;
-            let y = e.clientY - miny - 38;
-            console.log(x, y);
+            else
+            {
+                // mobile
+                 x = posX - minx - 15;
+                 y = posY - miny - 19;
+                 // Boundaries for dragging within the chessboard
+                 x = Math.max(0, Math.min(x, width - 15));
+                 y = Math.max(0, Math.min(y, width - 19));
+            }
+            
 
             setgridx(xpos);
             setgridy(ypos);
-
-
-            if (x < 0) {
-                x = 0;
-            }
-            if (x > width - 30) {
-                x = width - 30;
-            }
-            if (y < 0) {
-                y = 0;
-            }
-            if (y > width - 30) {
-                y = width - 30;
-            }
-
+    
             element.style.position = "absolute";
             element.style.left = `${x}px`;
             element.style.top = `${y}px`;
-
-
         }
+    };
 
-    }
 
+    // const movePiece = (e) => {
+
+    //     let minx = chessboardref.current.offsetLeft;
+    //     let width = chessboardref.current.clientWidth;
+    //     let miny = chessboardref.current.offsetTop;
+
+
+    //     if (activePiece !== null) {
+
+    //         let x = e.clientX - minx - 30;
+    //         let y = e.clientY - miny - 38;
+    //         if (x < 0) {
+    //             x = 0;
+    //         }
+    //         if (x > width - 30) {
+    //             x = width - 30;
+    //         }
+    //         if (y < 0) {
+    //             y = 0;
+    //         }
+    //         if (y > width - 38) {
+    //             y = width - 38;
+    //         }
+    //         activePiece.style.position = "absolute";
+    //         activePiece.style.left = `${x}px`;
+    //         activePiece.style.top = `${y}px`;
+
+    //     }
+
+    // }
 
     const movePiece = (e) => {
-
+        e.preventDefault(); // Prevent scrolling on touch devices
+        const eventType = e.type.includes('mouse') ? 'mouse' : 'touch';
+    
+        let posX, posY;
+        if (eventType === 'mouse') {
+            posX = e.clientX;
+            posY = e.clientY;
+        } else {
+            posX = e.touches[0].clientX;
+            posY = e.touches[0].clientY;
+        }
+    
         let minx = chessboardref.current.offsetLeft;
         let width = chessboardref.current.clientWidth;
         let miny = chessboardref.current.offsetTop;
-
-
+    
         if (activePiece !== null) {
-
-            let x = e.clientX - minx - 30;
-            let y = e.clientY - miny - 38;
-            if (x < 0) {
-                x = 0;
+            let x,y;
+            if (eventType === 'mouse')
+            {
+                x = posX - minx - 30;
+                y = posY - miny - 38;
+                x = Math.max(0, Math.min(x, width - 30));
+                y = Math.max(0, Math.min(y, width - 38));
             }
-            if (x > width - 30) {
-                x = width - 30;
+            else
+            {
+              // mobile
+              x = posX - minx - 15;
+              y = posY - miny - 19;
+              // Boundaries for dragging within the chessboard
+              x = Math.max(0, Math.min(x, width - 15));
+              y = Math.max(0, Math.min(y, width - 19));  
             }
-            if (y < 0) {
-                y = 0;
-            }
-            if (y > width - 38) {
-                y = width - 38;
-            }
+    
             activePiece.style.position = "absolute";
             activePiece.style.left = `${x}px`;
             activePiece.style.top = `${y}px`;
-
         }
+    };
+    
+    
 
-    }
+    // const leavePiece = (e) => {
+
+    //     let minx = chessboardref.current.offsetLeft;
+    //     let width = chessboardref.current.clientWidth;
+    //     let miny = chessboardref.current.offsetTop;
+
+    //     if (activePiece !== null) {
+
+    //         // Inscreen horizontal is considered as x-axis but in my board i standard the  horizontal as y axis or (j)
+    //         // let ypos = Math.floor((e.clientX - minx) / (width / 8));
+    //         // let xpos = Math.floor((e.clientY - miny) / (width / 8));
+    //         let ypos, xpos;
+    //         if (color === 'w') {
+    //             ypos = Math.floor((e.clientX - minx) / (width / 8));
+    //             xpos = Math.floor((e.clientY - miny) / (width / 8));
+    //         }
+    //         else {
+
+    //             ypos = Math.floor(((minx + width) - e.clientX) / (width / 8));
+    //             xpos = Math.floor(((miny + width) - e.clientY) / (width / 8));
+    //         }
+
+    //         const currentpiece = Boardstate.find((p) => p.x === gridx && p.y === gridy);
+    //         if (currentpiece) {
+    //             const isvalid = referee.isValidmove(gridx, gridy, xpos, ypos, currentpiece.type, currentpiece.playertype, Boardstate);
+    //             // 
+    //             if (canmove&&isvalid && currentpiece.color === color) {
+
+    //                 const endposition = (color === 'w') ? 0 : 7;
+
+    //                 const boardstate = Boardstate.reduce((accumulator, p) => {
+    //                     if (p.x === gridx && p.y === gridy) {
+    //                         const updatedElement = { ...p, x: xpos, y: ypos };
+    //                         accumulator.push(updatedElement);
+    //                     }
+    //                     else if (!(p.x === xpos && p.y === ypos)) {
+    //                         // it will not push that piece which will be attacked by the valid move
+    //                         accumulator.push(p);
+    //                     }
+    //                     return accumulator;
+    //                 }, []);
+
+    //                 setboardstate(boardstate);
+
+    //                 if (currentpiece.type === 'pawn' && xpos === endposition) {
+    //                     promotionref.current.className = "promotion";
+    //                     promotionref.current.style.left = `${e.clientX - 30}px`;
+    //                     promotionref.current.style.top = `${e.clientY - 30}px`;
+    //                     overlayref.current.style.left= `${chessboardref.current.offsetLeft}px`;
+    //                     overlayref.current.style.top= `${chessboardref.current.offsetTop}px`;
+    //                     overlayref.current.style.height=`${chessboardref.current.clientWidth}px`;
+    //                     overlayref.current.style.width=`${chessboardref.current.clientWidth}px`;
+    //                     overlayref.current.style.zIndex=1;
+    //                     const promotedpiece = { ...currentpiece, x: xpos, y: ypos };
+    //                     setpromotedpawn(promotedpiece);
+
+    //                 }
+    //                 else {
+    //                     //Normal move opposite player get the access and also see the updated board through server it get the msg
+
+    //                     setcanmove(false);
+    //                     socket.emit("move", boardstate);
+    //                 }
+
+
+    //             }
+    //             else {
+    //                 //Reset piece position if move is not valid
+    //                 activePiece.style.removeProperty("top");
+    //                 activePiece.style.removeProperty("left");
+    //             }
+
+    //         }
+    //         else {
+    //             activePiece.style.removeProperty("top");
+    //             activePiece.style.removeProperty("left");
+
+    //         }
+
+    //         setactivepiece(null);
+
+
+    //     }
+    // }
+
+    //##############################################################################################################
 
     const leavePiece = (e) => {
-
+        e.preventDefault(); // Prevent scrolling on touch devices
+        const eventType = e.type.includes('mouse') ? 'mouse' : 'touch';
+    
+        let posX, posY;
+        if (eventType === 'mouse') {
+            posX = e.clientX;
+            posY = e.clientY;
+        } else {
+            posX = e.changedTouches[0].clientX;  // Use `changedTouches` for touchend
+            posY = e.changedTouches[0].clientY;
+        }
+    
         let minx = chessboardref.current.offsetLeft;
         let width = chessboardref.current.clientWidth;
         let miny = chessboardref.current.offsetTop;
-
+    
         if (activePiece !== null) {
-
-            // Inscreen horizontal is considered as x-axis but in my board i standard the  horizontal as y axis or (j)
-            // let ypos = Math.floor((e.clientX - minx) / (width / 8));
-            // let xpos = Math.floor((e.clientY - miny) / (width / 8));
             let ypos, xpos;
             if (color === 'w') {
-                ypos = Math.floor((e.clientX - minx) / (width / 8));
-                xpos = Math.floor((e.clientY - miny) / (width / 8));
+                ypos = Math.floor((posX - minx) / (width / 8));
+                xpos = Math.floor((posY - miny) / (width / 8));
+            } else {
+                ypos = Math.floor(((minx + width) - posX) / (width / 8));
+                xpos = Math.floor(((miny + width) - posY) / (width / 8));
             }
-            else {
-
-                ypos = Math.floor(((minx + width) - e.clientX) / (width / 8));
-                xpos = Math.floor(((miny + width) - e.clientY) / (width / 8));
-            }
-
+    
             const currentpiece = Boardstate.find((p) => p.x === gridx && p.y === gridy);
             if (currentpiece) {
                 const isvalid = referee.isValidmove(gridx, gridy, xpos, ypos, currentpiece.type, currentpiece.playertype, Boardstate);
-                // 
-                if (canmove&&isvalid && currentpiece.color === color) {
-
+                if (canmove && isvalid && currentpiece.color === color) {
                     const endposition = (color === 'w') ? 0 : 7;
-
+    
                     const boardstate = Boardstate.reduce((accumulator, p) => {
                         if (p.x === gridx && p.y === gridy) {
                             const updatedElement = { ...p, x: xpos, y: ypos };
                             accumulator.push(updatedElement);
-                        }
-                        else if (!(p.x === xpos && p.y === ypos)) {
-                            // it will not push that piece which will be attacked by the valid move
+                        } else if (!(p.x === xpos && p.y === ypos)) {
                             accumulator.push(p);
                         }
                         return accumulator;
                     }, []);
-
+    
                     setboardstate(boardstate);
-
+    
                     if (currentpiece.type === 'pawn' && xpos === endposition) {
                         promotionref.current.className = "promotion";
-                        promotionref.current.style.left = `${e.clientX - 30}px`;
-                        promotionref.current.style.top = `${e.clientY - 30}px`;
-                        overlayref.current.style.left= `${chessboardref.current.offsetLeft}px`;
-                        overlayref.current.style.top= `${chessboardref.current.offsetTop}px`;
-                        overlayref.current.style.height=`${chessboardref.current.clientWidth}px`;
-                        overlayref.current.style.width=`${chessboardref.current.clientWidth}px`;
-                        overlayref.current.style.zIndex=1;
+                        promotionref.current.style.left = `${posX - 30}px`;
+                        promotionref.current.style.top = `${posY - 30}px`;
+                        overlayref.current.style.left = `${chessboardref.current.offsetLeft}px`;
+                        overlayref.current.style.top = `${chessboardref.current.offsetTop}px`;
+                        overlayref.current.style.height = `${chessboardref.current.clientWidth}px`;
+                        overlayref.current.style.width = `${chessboardref.current.clientWidth}px`;
+                        overlayref.current.style.zIndex = 1;
                         const promotedpiece = { ...currentpiece, x: xpos, y: ypos };
                         setpromotedpawn(promotedpiece);
-
-                    }
-                    else {
-                        //Normal move opposite player get the access and also see the updated board through server it get the msg
-
+                    } else {
                         setcanmove(false);
                         socket.emit("move", boardstate);
                     }
-
-
-                }
-                else {
-                    //Reset piece position if move is not valid
+                } else {
                     activePiece.style.removeProperty("top");
                     activePiece.style.removeProperty("left");
                 }
-
-            }
-            else {
+            } else {
                 activePiece.style.removeProperty("top");
                 activePiece.style.removeProperty("left");
-
             }
-
+    
             setactivepiece(null);
-
-
         }
-    }
-
-    //##############################################################################################################
-
+    };
+    
     socket.on('color', (msg) => {
         setcolor(msg);
         if (msg === 'w')
@@ -287,6 +467,7 @@ function Chessboard() {
             </div>
             <div className='promotionhidden' ref={promotionref} >
                     {
+                        // remember here hight and width are fix 
                         promopice.map(p => {
                             return <img key={p.type} src={p.image} style={{ height: '60px', width: '60px' }} onClick={(e) => { pawnpromomove(e, p.image, p.type) }} />;
                         })
@@ -299,6 +480,12 @@ function Chessboard() {
                 onMouseMove={movePiece}
                 onMouseUp={leavePiece}
                 onMouseLeave={leavePiece}
+
+                // mobile
+                onTouchStart={grabPiece}  // Handles touch events
+                onTouchMove={movePiece}   // Handles touch move events
+                onTouchEnd={leavePiece}   // Handles touch end events
+                onTouchCancel={leavePiece}
             >{board}</div>
         </div>
 

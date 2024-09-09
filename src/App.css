@@ -4,6 +4,8 @@
   
 }
 
+
+
 .app{
  background-color: aqua;
  display: flex;
@@ -35,6 +37,13 @@
   height: 100vh;
   background-color: #312e2b;
 }
+
+/* 60% of the viewport width  experiment for symmetry in hieght & width depends on the responsiveness*/
+:root {
+  --chessboard-width: min(80vw,80vh); 
+}
+
+
 .chessboard{
   
   position: relative;
@@ -42,8 +51,9 @@
   place-content: center;
   grid-template-columns: repeat(8,1fr);
   grid-template-rows: repeat(8,1fr);
-  width: 500px;
-  height: 500px;
+  /* board hieght and width depends on this 600px both */
+  width:  var(--chessboard-width);
+  height: var(--chessboard-width);
   background-color:#779952 
   
 }
@@ -66,8 +76,9 @@
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  height: 60px;
-  width:60px;
+  /* var(--chessboard-width) 60px */
+  height: calc(var(--chessboard-width) / 9);
+  width:  calc(var(--chessboard-width) / 9);
 }
 .chess_piece:hover{
   cursor: grab;
